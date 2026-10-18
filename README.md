@@ -4,6 +4,10 @@ Windows 10 和 Windows 11 的动态壁纸，不是只支持 Windows 11。画面�
 
 壁纸用 [Lively Wallpaper](https://github.com/rocksdanister/lively) 播放。页面会铺满当前屏幕，背景按 cover 缩放。这套壁纸按 Windows 11 制作，目前只在 Windows 11 上测试过。Windows 10 如果没有 winget，请先自行安装 Lively Wallpaper，再运行下面的安装脚本。
 
+## 演示
+
+[桌面录屏](demo/desktop.mp4) 是在 Windows 11 上录的。这段视频只放在仓库里，安装脚本不会把它复制到壁纸目录。
+
 ## 一键安装
 
 在 PowerShell 里运行：
@@ -105,3 +109,4 @@ irm https://raw.githubusercontent.com/D0brane/bird-wallpaper/main/install.ps1 | 
 | `install.ps1`、`install.bat` | 安装壁纸、播放器和计划任务 |
 | `install-probe.ps1` | 只登记登录计划任务 |
 | `birds`、`backgrounds` | 可选图案和背景，各有一份 `list.json` |
+| `demo/desktop.mp4` | 桌面演示录屏，不参与安装 |
