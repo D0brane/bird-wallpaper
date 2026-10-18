@@ -68,6 +68,9 @@ public static class BirdDesktop {
   [DllImport("user32.dll", CharSet = CharSet.Unicode)]
   public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
+  [DllImport("user32.dll", SetLastError = true)]
+  public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, uint flags, uint timeout, out IntPtr result);
+
   [DllImport("user32.dll")]
   public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int processId);
 
@@ -107,6 +110,13 @@ public static class BirdDesktop {
 "@
 } catch {
   if ($_.Exception.Message -notmatch "already exists") { throw }
+}
+
+function Send-ListMessage([IntPtr]$window, [uint32]$message, [IntPtr]$wparam, [IntPtr]$lparam) {
+  $result = [IntPtr]::Zero
+  $ok = [BirdDesktop]::SendMessageTimeout($window, $message, $wparam, $lparam, 2, 400, [ref]$result)
+  if ($ok -eq [IntPtr]::Zero) { return $null }
+  return $result
 }
 
 function Test-InputDesktop {
@@ -165,14 +175,17 @@ function Get-IconCenters {
     $scale = $dpi / 96.0
     $originX = [BirdDesktop]::GetSystemMetrics(76)
     $originY = [BirdDesktop]::GetSystemMetrics(77)
-    $count = [BirdDesktop]::SendMessage($list, [BirdDesktop]::LvmGetItemCount, [IntPtr]::Zero, [IntPtr]::Zero).ToInt32()
+    $countResult = Send-ListMessage $list ([BirdDesktop]::LvmGetItemCount) ([IntPtr]::Zero) ([IntPtr]::Zero)
+    if ($null -eq $countResult) { throw "listview timeout" }
+    $count = $countResult.ToInt32()
     $points = New-Object System.Collections.Generic.List[object]
 
     for ($index = 0; $index -lt $count; $index++) {
       $seed = [byte[]](0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
       $written = [UIntPtr]::Zero
       [BirdDesktop]::WriteProcessMemory($process, $remote, $seed, [UIntPtr]::new(16), [ref]$written) | Out-Null
-      [BirdDesktop]::SendMessage($list, [BirdDesktop]::LvmGetItemRect, [IntPtr]::new($index), $remote) | Out-Null
+      $rectResult = Send-ListMessage $list ([BirdDesktop]::LvmGetItemRect) ([IntPtr]::new($index)) $remote
+      if ($null -eq $rectResult) { throw "listview timeout" }
       $buffer = New-Object byte[] 16
       $read = [UIntPtr]::Zero
       [BirdDesktop]::ReadProcessMemory($process, $remote, $buffer, [UIntPtr]::new(16), [ref]$read) | Out-Null
@@ -379,8 +392,10 @@ function Receive-OneParam($client) {
 
 function Receive-ParamSaves {
   if ($null -eq $script:paramListener) { return }
-  while ($script:paramListener.Pending) {
-    $client = $script:paramListener.AcceptTcpClient()
+  while ($true) {
+    $client = $null
+    try { $client = $script:paramListener.AcceptTcpClient() } catch { break }
+    if ($null -eq $client) { break }
     try { Receive-OneParam $client } catch {} finally { $client.Close() }
   }
 }
@@ -397,12 +412,19 @@ function Wait-Probe([int]$milliseconds) {
 
 [BirdDesktop]::SetProcessDpiAwarenessContext([IntPtr]::new(-4)) | Out-Null
 $mutex = New-Object System.Threading.Mutex($false, "Local\BirdWallpaperIconProbe")
-if (-not $mutex.WaitOne(0)) { exit 0 }
+$ownsMutex = $false
+try {
+  $ownsMutex = $mutex.WaitOne(0)
+} catch [System.Threading.AbandonedMutexException] {
+  $ownsMutex = $true
+}
+if (-not $ownsMutex) { exit 0 }
 
 try {
   try {
     $script:paramListener = New-Object System.Net.Sockets.TcpListener ([Net.IPAddress]::Loopback, 8766)
     $script:paramListener.Start()
+    $script:paramListener.Server.Blocking = $false
   } catch {
     $script:paramListener = $null
   }
