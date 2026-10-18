@@ -5,23 +5,23 @@ const pauseBtn = document.getElementById("pause");
 const statusEl = document.getElementById("status");
 
 const params = {
-  sep: 1.5,
+  sep: 1.4,
   ali: 1.1,
-  coh: 1.1,
+  coh: 0.6,
   evade: 2.4,
-  perception: 90,
+  perception: 103,
   threat: 168,
-  mouseThreshold: 72,
-  iconThreat: 96,
-  iconThreshold: 40,
-  iconEvade: 1.8,
-  maxSpeed: 145,
-  count: 200,
-  birdSize: 16,
-  forceFilter: 16,
-  moveFilter: 18,
-  headFilter: 7,
-  fearFilter: 7,
+  mouseThreshold: 47,
+  iconThreat: 57,
+  iconThreshold: 65,
+  iconEvade: 1.5,
+  maxSpeed: 208,
+  count: 415,
+  birdSize: 22,
+  forceFilter: 48,
+  moveFilter: 48,
+  headFilter: 18,
+  fearFilter: 48,
 };
 
 const THREAT_FADE = 0.8;

@@ -6,7 +6,7 @@
     "text": "分离",
     "type": "slider",
     "help": "推开过近的邻居",
-    "value": 1.5
+    "value": 1.4
   },
   "ali": {
     "max": 4,
@@ -24,7 +24,7 @@
     "text": "聚集",
     "type": "slider",
     "help": "靠向邻居的平均位置",
-    "value": 1.1
+    "value": 0.6
   },
   "evade": {
     "max": 5,
@@ -51,7 +51,7 @@
     "text": "鼠标躲避阈值",
     "type": "slider",
     "help": "小于等于这个距离时，对指针的躲避拉满",
-    "value": 72
+    "value": 47
   },
   "iconEvade": {
     "max": 5,
@@ -60,7 +60,7 @@
     "text": "图标躲避",
     "type": "slider",
     "help": "桌面图标这只隼的躲避强度",
-    "value": 1.8
+    "value": 1.5
   },
   "iconThreat": {
     "max": 240,
@@ -69,7 +69,7 @@
     "text": "图标威胁半径",
     "type": "slider",
     "help": "超出这个距离，图标不再影响鸟",
-    "value": 96
+    "value": 57
   },
   "iconThreshold": {
     "max": 240,
@@ -78,7 +78,7 @@
     "text": "图标躲避阈值",
     "type": "slider",
     "help": "小于等于这个距离时，对图标的躲避拉满",
-    "value": 40
+    "value": 65
   },
   "perception": {
     "max": 140,
@@ -87,7 +87,7 @@
     "text": "感知半径",
     "type": "slider",
     "help": "鸟只能看见这个距离内的邻居",
-    "value": 90
+    "value": 103
   },
   "maxSpeed": {
     "max": 280,
@@ -95,7 +95,7 @@
     "step": 1,
     "text": "最大速度",
     "type": "slider",
-    "value": 145
+    "value": 208
   },
   "count": {
     "max": 450,
@@ -103,7 +103,7 @@
     "step": 1,
     "text": "数量",
     "type": "slider",
-    "value": 200
+    "value": 415
   },
   "birdSize": {
     "max": 64,
@@ -112,7 +112,7 @@
     "text": "鸟的大小",
     "type": "slider",
     "help": "每只鸟的显示大小",
-    "value": 16
+    "value": 22
   },
   "forceFilter": {
     "max": 48,
@@ -121,7 +121,7 @@
     "text": "受力滤波",
     "type": "slider",
     "help": "越大越跟手，越小转向越稳",
-    "value": 16
+    "value": 48
   },
   "moveFilter": {
     "max": 48,
@@ -130,7 +130,7 @@
     "text": "位置滤波",
     "type": "slider",
     "help": "越大画面越贴真实位置，越小越不抖",
-    "value": 18
+    "value": 48
   },
   "headFilter": {
     "max": 48,
@@ -139,7 +139,7 @@
     "text": "朝向滤波",
     "type": "slider",
     "help": "越大鸟头转得越快，越小越稳",
-    "value": 7
+    "value": 18
   },
   "fearFilter": {
     "max": 48,
@@ -148,7 +148,7 @@
     "text": "受惊滤波",
     "type": "slider",
     "help": "越大变色越快，越小变色越缓",
-    "value": 7
+    "value": 48
   },
   "birdImage": {
     "type": "folderDropdown",
