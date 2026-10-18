@@ -59,13 +59,33 @@ function Copy-Wallpaper([string]$source, [string]$target) {
   }
 }
 
+function Get-SupportText {
+  "本壁纸支持 Windows 10 和 Windows 11，不是只支持 Windows 11；目前只在 Windows 11 上测试过。Windows 10 如果没有 winget，请先自行安装 Lively Wallpaper（https://github.com/rocksdanister/lively），然后重新运行本脚本。"
+}
+
+function Assert-SupportedWindows {
+  $build = 0
+  try {
+    $current = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+    [void][int]::TryParse([string]$current.CurrentBuild, [ref]$build)
+  } catch {
+    return
+  }
+  if ($build -gt 0 -and $build -lt 10240) {
+    throw "只能在 Windows 10 或 Windows 11 上安装。$(Get-SupportText)"
+  }
+}
+
 function Install-LivelyIfMissing {
   if (Find-Lively) { return }
+  if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    throw "没有找到 winget，无法自动安装 Lively Wallpaper。$(Get-SupportText)"
+  }
   Write-Host "正在安装 Lively Wallpaper..."
   winget install --id rocksdanister.LivelyWallpaper -e --accept-package-agreements --accept-source-agreements
   $deadline = (Get-Date).AddMinutes(3)
   while (-not (Find-Lively) -and (Get-Date) -lt $deadline) { Start-Sleep -Seconds 2 }
-  if (-not (Find-Lively)) { throw "Lively Wallpaper 没有安装成功。请先安装它，然后重新运行本脚本。" }
+  if (-not (Find-Lively)) { throw "Lively Wallpaper 没有安装成功。$(Get-SupportText)" }
 }
 
 function Start-IconProbe([string]$probe) {
@@ -78,6 +98,7 @@ function Start-IconProbe([string]$probe) {
 }
 
 Write-Host "安装鸟群与隼壁纸"
+Assert-SupportedWindows
 $source = Get-SourceRoot
 Install-LivelyIfMissing
 Copy-Wallpaper $source $installDir
