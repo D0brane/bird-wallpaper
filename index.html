@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>鸟群与隼</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="sky" aria-label="鸟群与隼的仿真画面"></canvas>
+  <aside id="panel">
+    <div id="chip">
+      <p>设置</p>
+      <button id="expand" type="button">展开</button>
+    </div>
+    <div id="panel-body">
+      <div class="panel-head">
+        <h1>设置</h1>
+        <button id="collapse" type="button">收起</button>
+      </div>
+      <p class="hint">指针和图标都是隼。鸟只看附近的邻居。飞出屏幕会从对面进来。</p>
+
+      <div class="field">
+        <div class="field-head">
+          <label for="sep">分离</label>
+          <output id="sep-out" for="sep">1.5</output>
+        </div>
+        <input id="sep" type="range" min="0" max="4" step="0.1" value="1.5">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="ali">对齐</label>
+          <output id="ali-out" for="ali">1.1</output>
+        </div>
+        <input id="ali" type="range" min="0" max="4" step="0.1" value="1.1">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="coh">聚集</label>
+          <output id="coh-out" for="coh">1.1</output>
+        </div>
+        <input id="coh" type="range" min="0" max="4" step="0.1" value="1.1">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="evade">躲避</label>
+          <output id="evade-out" for="evade">2.4</output>
+        </div>
+        <input id="evade" type="range" min="0" max="5" step="0.1" value="2.4">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="perception">感知半径</label>
+          <output id="perception-out" for="perception">90</output>
+        </div>
+        <input id="perception" type="range" min="20" max="140" step="1" value="90">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="threat">鼠标威胁半径</label>
+          <output id="threat-out" for="threat">168</output>
+        </div>
+        <input id="threat" type="range" min="40" max="320" step="1" value="168">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="mouseThreshold">鼠标躲避阈值</label>
+          <output id="mouseThreshold-out" for="mouseThreshold">72</output>
+        </div>
+        <input id="mouseThreshold" type="range" min="0" max="320" step="1" value="72">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="iconThreat">图标威胁半径</label>
+          <output id="iconThreat-out" for="iconThreat">96</output>
+        </div>
+        <input id="iconThreat" type="range" min="20" max="240" step="1" value="96">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="iconThreshold">图标躲避阈值</label>
+          <output id="iconThreshold-out" for="iconThreshold">40</output>
+        </div>
+        <input id="iconThreshold" type="range" min="0" max="240" step="1" value="40">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="iconEvade">图标躲避</label>
+          <output id="iconEvade-out" for="iconEvade">1.8</output>
+        </div>
+        <input id="iconEvade" type="range" min="0" max="5" step="0.1" value="1.8">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="maxSpeed">最大速度</label>
+          <output id="maxSpeed-out" for="maxSpeed">145</output>
+        </div>
+        <input id="maxSpeed" type="range" min="60" max="280" step="1" value="145">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="count">数量</label>
+          <output id="count-out" for="count">200</output>
+        </div>
+        <input id="count" type="range" min="20" max="450" step="1" value="200">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="birdSize">鸟的大小</label>
+          <output id="birdSize-out" for="birdSize">16</output>
+        </div>
+        <input id="birdSize" type="range" min="6" max="64" step="1" value="16">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="forceFilter">受力滤波</label>
+          <output id="forceFilter-out" for="forceFilter">16</output>
+        </div>
+        <input id="forceFilter" type="range" min="1" max="48" step="1" value="16">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="moveFilter">位置滤波</label>
+          <output id="moveFilter-out" for="moveFilter">18</output>
+        </div>
+        <input id="moveFilter" type="range" min="1" max="48" step="1" value="18">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="headFilter">朝向滤波</label>
+          <output id="headFilter-out" for="headFilter">7</output>
+        </div>
+        <input id="headFilter" type="range" min="1" max="48" step="1" value="7">
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="fearFilter">受惊滤波</label>
+          <output id="fearFilter-out" for="fearFilter">7</output>
+        </div>
+        <input id="fearFilter" type="range" min="1" max="48" step="1" value="7">
+      </div>
+
+      <div class="actions">
+        <button id="pause" type="button">暂停</button>
+        <button id="reset" type="button">重置</button>
+      </div>
+
+      <div class="field choice" id="bird-choice">
+        <div class="field-head">
+          <span id="bird-label">鸟群图案</span>
+        </div>
+        <button id="bird-current" class="choice-current" type="button" aria-labelledby="bird-label" data-value="">折线</button>
+        <div id="bird-list" class="choice-list" hidden></div>
+        <label class="file-pick">
+          选择图案
+          <input id="bird-file" type="file" accept="image/svg+xml,image/png,image/webp,image/jpeg">
+        </label>
+        <p class="note">点上面的名字展开。放进 birds 文件夹的图案，下次打开还能选。</p>
+      </div>
+
+      <div class="field choice" id="background-choice">
+        <div class="field-head">
+          <span id="background-label">背景</span>
+        </div>
+        <button id="background-current" class="choice-current" type="button" aria-labelledby="background-label" data-value="">夜空</button>
+        <div id="background-list" class="choice-list" hidden></div>
+        <label class="file-pick">
+          选择图片
+          <input id="background-file" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <p class="note">点上面的名字展开。放进 backgrounds 文件夹的图片，下次打开还能选。</p>
+      </div>
+
+      <p class="status" id="status">受惊 0</p>
+    </div>
+  </aside>
+  <script src="sim.js"></script>
+</body>
+</html>

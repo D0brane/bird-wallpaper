@@ -1,0 +1,12 @@
+{
+  "AppVersion": "2.0.0.0",
+  "Title": "鸟群与隼",
+  "Desc": "鼠标和桌面图标是两种隼。鸟群按局部规则飞行，飞出屏幕会从对面回来。",
+  "Author": "",
+  "License": "",
+  "Contact": "",
+  "Type": 1,
+  "FileName": "index.html",
+  "Arguments": "--pause-event true",
+  "IsAbsolutePath": false
+}

@@ -1,0 +1,168 @@
+{
+  "sep": {
+    "max": 4,
+    "min": 0,
+    "step": 0.1,
+    "text": "分离",
+    "type": "slider",
+    "help": "推开过近的邻居",
+    "value": 1.5
+  },
+  "ali": {
+    "max": 4,
+    "min": 0,
+    "step": 0.1,
+    "text": "对齐",
+    "type": "slider",
+    "help": "转向邻居的平均方向",
+    "value": 1.1
+  },
+  "coh": {
+    "max": 4,
+    "min": 0,
+    "step": 0.1,
+    "text": "聚集",
+    "type": "slider",
+    "help": "靠向邻居的平均位置",
+    "value": 1.1
+  },
+  "evade": {
+    "max": 5,
+    "min": 0,
+    "step": 0.1,
+    "text": "鼠标躲避",
+    "type": "slider",
+    "help": "指针这只隼的躲避强度",
+    "value": 2.4
+  },
+  "threat": {
+    "max": 320,
+    "min": 40,
+    "step": 1,
+    "text": "鼠标威胁半径",
+    "type": "slider",
+    "help": "超出这个距离，指针不再影响鸟",
+    "value": 168
+  },
+  "mouseThreshold": {
+    "max": 320,
+    "min": 0,
+    "step": 1,
+    "text": "鼠标躲避阈值",
+    "type": "slider",
+    "help": "小于等于这个距离时，对指针的躲避拉满",
+    "value": 72
+  },
+  "iconEvade": {
+    "max": 5,
+    "min": 0,
+    "step": 0.1,
+    "text": "图标躲避",
+    "type": "slider",
+    "help": "桌面图标这只隼的躲避强度",
+    "value": 1.8
+  },
+  "iconThreat": {
+    "max": 240,
+    "min": 20,
+    "step": 1,
+    "text": "图标威胁半径",
+    "type": "slider",
+    "help": "超出这个距离，图标不再影响鸟",
+    "value": 96
+  },
+  "iconThreshold": {
+    "max": 240,
+    "min": 0,
+    "step": 1,
+    "text": "图标躲避阈值",
+    "type": "slider",
+    "help": "小于等于这个距离时，对图标的躲避拉满",
+    "value": 40
+  },
+  "perception": {
+    "max": 140,
+    "min": 20,
+    "step": 1,
+    "text": "感知半径",
+    "type": "slider",
+    "help": "鸟只能看见这个距离内的邻居",
+    "value": 90
+  },
+  "maxSpeed": {
+    "max": 280,
+    "min": 60,
+    "step": 1,
+    "text": "最大速度",
+    "type": "slider",
+    "value": 145
+  },
+  "count": {
+    "max": 450,
+    "min": 20,
+    "step": 1,
+    "text": "数量",
+    "type": "slider",
+    "value": 200
+  },
+  "birdSize": {
+    "max": 64,
+    "min": 6,
+    "step": 1,
+    "text": "鸟的大小",
+    "type": "slider",
+    "help": "每只鸟的显示大小",
+    "value": 16
+  },
+  "forceFilter": {
+    "max": 48,
+    "min": 1,
+    "step": 1,
+    "text": "受力滤波",
+    "type": "slider",
+    "help": "越大越跟手，越小转向越稳",
+    "value": 16
+  },
+  "moveFilter": {
+    "max": 48,
+    "min": 1,
+    "step": 1,
+    "text": "位置滤波",
+    "type": "slider",
+    "help": "越大画面越贴真实位置，越小越不抖",
+    "value": 18
+  },
+  "headFilter": {
+    "max": 48,
+    "min": 1,
+    "step": 1,
+    "text": "朝向滤波",
+    "type": "slider",
+    "help": "越大鸟头转得越快，越小越稳",
+    "value": 7
+  },
+  "fearFilter": {
+    "max": 48,
+    "min": 1,
+    "step": 1,
+    "text": "受惊滤波",
+    "type": "slider",
+    "help": "越大变色越快，越小变色越缓",
+    "value": 7
+  },
+  "birdImage": {
+    "type": "folderDropdown",
+    "value": "",
+    "text": "鸟群图案",
+    "filter": "*.svg|*.png|*.webp|*.jpg|*.jpeg",
+    "folder": "birds",
+    "help": "换成自己的图案。留空则用默认折线。"
+  },
+  "backgroundImage": {
+    "type": "folderDropdown",
+    "value": "",
+    "text": "背景",
+    "filter": "*.jpg|*.jpeg|*.png|*.webp",
+    "folder": "backgrounds"
+  }
+}

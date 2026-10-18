@@ -1,0 +1,247 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #070910;
+  overflow: hidden;
+  color: #e8eef8;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+#sky {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
+}
+
+#panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  box-sizing: border-box;
+  width: min(272px, calc(100vw - 32px));
+  max-height: calc(100vh - 104px);
+  overflow: auto;
+  padding: 16px 16px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(10, 14, 24, 0.84);
+  backdrop-filter: blur(14px);
+  color-scheme: dark;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+#panel.collapsed {
+  width: auto;
+  max-width: min(280px, calc(100vw - 32px));
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+#panel.collapsed #panel-body,
+#panel:not(.collapsed) #chip {
+  display: none;
+}
+
+#chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#chip p {
+  margin: 0;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+#collapse,
+#expand {
+  flex: none;
+  padding: 6px 12px;
+}
+
+.hint,
+.note,
+.status {
+  margin: 0;
+  color: rgba(232, 238, 248, 0.62);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.hint {
+  margin-bottom: 14px;
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+  font-size: 13px;
+}
+
+output {
+  color: rgba(232, 238, 248, 0.7);
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(232, 238, 248, 0.28);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -6px;
+  border: none;
+  border-radius: 50%;
+  background: #f2f5fb;
+  appearance: none;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 2px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(232, 238, 248, 0.28);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: #f2f5fb;
+}
+
+#evade::-webkit-slider-thumb,
+#evade::-moz-range-thumb,
+#iconEvade::-webkit-slider-thumb,
+#iconEvade::-moz-range-thumb {
+  background: #f0a36a;
+}
+
+.file-pick,
+.choice-current,
+.choice-list button {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 6px;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+}
+
+.choice-current,
+.choice-list button {
+  flex: none;
+  text-align: left;
+  padding: 7px 10px;
+}
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.choice-list[hidden] {
+  display: none;
+}
+
+.choice-list button {
+  margin-top: 4px;
+}
+
+.choice-list button[aria-pressed="true"] {
+  border-color: rgba(240, 163, 106, 0.85);
+  background: rgba(240, 163, 106, 0.14);
+}
+
+.file-pick {
+  display: inline-flex;
+  justify-content: center;
+  padding: 7px 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.file-pick input {
+  display: none;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+button {
+  flex: 1;
+  padding: 8px 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(240, 163, 106, 0.8);
+  outline-offset: 2px;
+}
+
+.note {
+  margin-top: 4px;
+}
+
+.status {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(240, 163, 106, 0.92);
+}
