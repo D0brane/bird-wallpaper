@@ -36,7 +36,7 @@ function Copy-Wallpaper([string]$source, [string]$target) {
   if ($sourceFull -eq $targetFull) { return }
   $files = @(
     "index.html", "sim.js", "style.css", "LivelyInfo.json", "LivelyProperties.json",
-    "bird-wallpaper.marker", "icon-probe.ps1", "install-probe.ps1", "install.ps1", "install.bat", "README.md"
+    "bird-wallpaper.marker", "icon-probe.ps1", "install-probe.ps1", "install.ps1", "install.bat", "README.md", "assets.yaml"
   )
   foreach ($name in $files) {
     $from = Join-Path $source $name

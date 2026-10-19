@@ -1,0 +1,13 @@
+bird: "双翼.svg"
+background: "月夜.jpg"
+birds:
+  - "光刃.svg"
+  - "尖箭.svg"
+  - "菱镖.svg"
+  - "双翼.svg"
+backgrounds:
+  - "地平微光.jpg"
+  - "极光.jpg"
+  - "星云.jpg"
+  - "银河.jpg"
+  - "月夜.jpg"

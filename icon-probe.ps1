@@ -215,13 +215,19 @@ function Write-Utf8([string]$path, [string]$text) {
   Remove-Item -LiteralPath $tmp -Force
 }
 
-function Update-FolderList([string]$dir, [string]$folder, [string[]]$extensions) {
+function Get-FolderAssetNames([string]$dir, [string]$folder, [string[]]$extensions) {
   $path = Join-Path $dir $folder
-  if (-not (Test-Path -LiteralPath $path)) { return }
-  $names = @(Get-ChildItem -LiteralPath $path -File -ErrorAction SilentlyContinue |
+  if (-not (Test-Path -LiteralPath $path)) { return @() }
+  return @(Get-ChildItem -LiteralPath $path -File -ErrorAction SilentlyContinue |
     Where-Object { $extensions -contains $_.Extension.ToLowerInvariant() } |
     ForEach-Object { $_.Name } |
     Sort-Object)
+}
+
+function Update-FolderList([string]$dir, [string]$folder, [string[]]$extensions) {
+  $path = Join-Path $dir $folder
+  if (-not (Test-Path -LiteralPath $path)) { return }
+  $names = @(Get-FolderAssetNames $dir $folder $extensions)
   $listParts = foreach ($name in $names) {
     '"' + ($name -replace '\\', '\\' -replace '"', '\"') + '"'
   }
@@ -232,10 +238,51 @@ function Update-FolderList([string]$dir, [string]$folder, [string[]]$extensions)
   if ($current -ne $listJson) { Write-Utf8 $listPath $listJson }
 }
 
+function Format-YamlString([string]$value) {
+  return '"' + (($value -replace '\\', '\\' -replace '"', '\"')) + '"'
+}
+
+function ConvertTo-AssetsYaml([string]$bird, [string]$background, [string[]]$birds, [string[]]$backgrounds) {
+  $lines = New-Object System.Collections.Generic.List[string]
+  $lines.Add("bird: $(Format-YamlString $bird)")
+  $lines.Add("background: $(Format-YamlString $background)")
+  $lines.Add("birds:")
+  foreach ($name in @($birds)) { $lines.Add("  - $(Format-YamlString $name)") }
+  $lines.Add("backgrounds:")
+  foreach ($name in @($backgrounds)) { $lines.Add("  - $(Format-YamlString $name)") }
+  return ($lines -join "`n") + "`n"
+}
+
+function Publish-AssetsYaml([string]$dir, [string]$bird, [string]$background) {
+  $birds = @(Get-FolderAssetNames $dir "birds" @(".svg", ".png", ".webp", ".jpg", ".jpeg"))
+  $backgrounds = @(Get-FolderAssetNames $dir "backgrounds" @(".jpg", ".jpeg", ".png", ".webp"))
+  $yaml = ConvertTo-AssetsYaml $bird $background $birds $backgrounds
+  $path = Join-Path $dir "assets.yaml"
+  $current = ""
+  if (Test-Path -LiteralPath $path) { $current = [System.IO.File]::ReadAllText($path) }
+  if ($current -ne $yaml) { Write-Utf8 $path $yaml }
+}
+
+function Get-SavedImageChoice([string]$dir) {
+  $bird = ""
+  $background = ""
+  $path = Join-Path $dir "params.json"
+  if (Test-Path -LiteralPath $path) {
+    try {
+      $saved = [System.IO.File]::ReadAllText($path) | ConvertFrom-Json
+      $bird = [string]$saved.birdImage
+      $background = [string]$saved.backgroundImage
+    } catch {}
+  }
+  return @{ bird = $bird; background = $background }
+}
+
 function Update-BackgroundLists {
   foreach ($dir in (Get-WallpaperDirs)) {
     Update-FolderList $dir "backgrounds" @(".jpg", ".jpeg", ".png", ".webp")
     Update-FolderList $dir "birds" @(".svg", ".png", ".webp", ".jpg", ".jpeg")
+    $choice = Get-SavedImageChoice $dir
+    Publish-AssetsYaml $dir $choice.bird $choice.background
   }
 }
 
@@ -339,8 +386,10 @@ function ConvertTo-ParamsJson($saved) {
 }
 
 function Publish-Params([string]$json) {
+  $saved = $json | ConvertFrom-Json
   foreach ($dir in (Get-WallpaperDirs)) {
     Write-Utf8 (Join-Path $dir "params.json") $json
+    Publish-AssetsYaml $dir ([string]$saved.birdImage) ([string]$saved.backgroundImage)
   }
 }
 

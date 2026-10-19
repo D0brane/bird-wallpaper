@@ -90,7 +90,7 @@ irm https://raw.githubusercontent.com/D0brane/bird-wallpaper/main/install.ps1 | 
 
 壁纸页面不能直接写磁盘，而且 Lively 每次加载都可能换一个临时浏览器目录，所以不能靠 localStorage。
 
-改任何参数后，页面把数值和当前选中的图片文件名 POST 到 `http://127.0.0.1:8766/params`。这个端口只绑在本机回环地址上。探测进程收到后，按 `LivelyProperties.json` 里的最小、最大和步长检查数值，图片名必须是安全的文件名，然后把 `params.json` 写到带有 `bird-wallpaper.marker` 的壁纸目录。请求体最大 8 KB。
+改任何参数后，页面把数值和当前选中的图片文件名 POST 到 `http://127.0.0.1:8766/params`。这个端口只绑在本机回环地址上。探测进程收到后，按 `LivelyProperties.json` 里的最小、最大和步长检查数值，图片名必须是安全的文件名，然后把 `params.json` 写到带有 `bird-wallpaper.marker` 的壁纸目录。请求体最大 8 KB。同时把当前鸟标、当前背景，以及 `birds`、`backgrounds` 里的文件名写入 `assets.yaml`。鸟标留空表示折线，背景留空表示夜空。
 
 下次打开时，页面先读 `params.json`。文件存在就用文件里的值，并在 5 秒内忽略 Lively 推过来的旧属性，避免把调好的参数盖掉。没有文件时，才使用 Lively 属性或页面上的初始值。
 
@@ -105,6 +105,7 @@ irm https://raw.githubusercontent.com/D0brane/bird-wallpaper/main/install.ps1 | 
 | `LivelyInfo.json` | 告诉 Lively 这是网页壁纸，并接收暂停事件 |
 | `LivelyProperties.json` | Lively 属性定义，也是参数的取值范围 |
 | `params.json` | 初始参数；安装后继续被本机修改覆盖 |
+| `assets.yaml` | 当前使用的鸟标和背景，以及可选文件名 |
 | `icon-probe.ps1` | 读图标位置，并在本机接收参数保存 |
 | `install.ps1`、`install.bat` | 安装壁纸、播放器和计划任务 |
 | `install-probe.ps1` | 只登记登录计划任务 |
